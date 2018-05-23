@@ -1,0 +1,1 @@
+web: java -jar target/kaj-backend-1.0.jar
