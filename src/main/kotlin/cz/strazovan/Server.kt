@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
 
     val rooms = listOf<Room>(Room("KAJ"), Room("LAG"))
     val testRoom = Room("test1")
-    val app = Javalin.create().port(7000)
+    val app = Javalin.create().port(getHerokuAssignedPort())
 
     app.get("/testMessage"){
         ctx ->
@@ -35,5 +35,13 @@ fun main(args: Array<String>) {
         app.stop()
     })
     app.start()
+
+
 }
 
+private fun getHerokuAssignedPort(): Int {
+    val processBuilder = ProcessBuilder()
+    return if (processBuilder.environment()["PORT"] != null) {
+        Integer.parseInt(processBuilder.environment()["PORT"])
+    } else 7000
+}
