@@ -88,10 +88,13 @@ class Room(val name: String,
 
         ws?.onClose { session, statusCode, reason ->
             val user = users[session]
-            println("user $user disconnected")
-            users.remove(session)
-            val newUserMessage = Message(User("server"), ContentType.USER_DISCONNECTED, MessageType.USERS, gson.toJson(user))
-            broadcast(gson.toJson(newUserMessage), session)
+            user?.let {
+                println("user $user disconnected")
+                users.remove(session)
+                val newUserMessage = Message(User("server"), ContentType.USER_DISCONNECTED, MessageType.USERS, gson.toJson(user))
+                broadcast(gson.toJson(newUserMessage), session)
+            }
+
         }
     }
 
