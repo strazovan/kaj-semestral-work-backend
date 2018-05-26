@@ -13,11 +13,15 @@ fun main(args: Array<String>) {
     val testRoom = Room("test1")
     val app = Javalin.create().port(getHerokuAssignedPort())
 
-    app.get("/testMessage"){
-        ctx ->
+    app.get("/testMessage") { ctx ->
         ctx.json(Message(User("Server"), ContentType.TEXT_MESSAGE, MessageType.MESSAGE, "Ahoj"))
     }
-     // for each room create endpoint?
+    // for each room create endpoint?
+
+
+    app.get("/rooms/list") { ctx ->
+        ctx.json(rooms)
+    }
 
     rooms.forEach {
         app.ws("/rooms/${it.name}", it)
@@ -31,7 +35,7 @@ fun main(args: Array<String>) {
         println("stopping")
     }
 
-    Runtime.getRuntime().addShutdownHook(Thread(){
+    Runtime.getRuntime().addShutdownHook(Thread() {
         app.stop()
     })
     app.start()
