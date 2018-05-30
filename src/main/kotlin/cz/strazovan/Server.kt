@@ -20,6 +20,7 @@ fun main(args: Array<String>) {
 
 
     app.get("/rooms/list") { ctx ->
+        ctx.header("Access-Control-Allow-Origin", "*")
         ctx.json(rooms)
     }
 
